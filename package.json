@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify client/scripts/main.js --debug -o client/scripts/build/main.bundle.js"
+    "build": "browserify client/scripts/main.js --debug -o client/scripts/build/main.bundle.js",
+    "watch": "watchify client/scripts/main.js --verbose --debug -o client/scripts/build/main.bundle.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,10 @@
     "browserify": "11.2.0",
     "express": "4.13.3",
     "mocha": "2.3.3",
-    "react": "0.13.3"
+    "react": "0.13.3",
+    "watchify": "^3.4.0"
+  },
+  "browserify": {
+    "transform": ["babelify"]
   }
 }
