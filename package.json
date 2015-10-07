@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "prestart": "browserify client/scripts/main.js --debug -o client/scripts/build/main.bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify client/scripts/main.js --debug -o client/scripts/build/main.bundle.js",
     "watch": "watchify client/scripts/main.js --verbose --debug -o client/scripts/build/main.bundle.js"
   },
   "repository": {
