@@ -29,14 +29,6 @@ function setSubjects(subjects) {
   return setItem('subjects', subjects);
 }
 
-function findSubject(id) {
-  var subjects = getSubjects(),
-      subject = subjects.find(function (subject) {
-        return subject.id === id;
-      });
-  return subject ? new Subject(subject) : null;
-}
-
 function clearSubjects() {
   setSubjects([]);
 }
@@ -62,10 +54,11 @@ function clearBBLs() {
 }
 
 module.exports.init = makeReady;
+
 module.exports.getSubjects = getSubjects;
 module.exports.setSubjects = setSubjects;
-module.exports.findSubject = findSubject;
 module.exports.clearSubjects = clearSubjects;
+
 module.exports.getBBLs = getBBLs;
 module.exports.setBBLs = setBBLs;
 module.exports.findBBL = findBBL;

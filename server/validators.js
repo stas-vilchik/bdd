@@ -39,6 +39,15 @@ Validator.prototype.checkOnlyFields = function (fields) {
   return this;
 };
 
+Validator.prototype.checkCustom = function (fn) {
+  if (fn(this.attrs)) {
+    this.successfulChecks.push({ check: 'custom' });
+  } else {
+    this.failedChecks.push({ check: 'custom' });
+  }
+  return this;
+};
+
 Validator.prototype.getFailedChecks = function () {
   return this.failedChecks.slice();
 };
