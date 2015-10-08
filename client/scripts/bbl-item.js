@@ -9,7 +9,7 @@ export default React.createClass({
     return (
         <div className="bbl">
           <h2>{label}</h2>
-          <SubjectList data={this.props.bbl.subjects} onRefresh={this.props.refresh}/>
+          <SubjectList data={this.props.bbl.subjects} bbls={this.props.bbls} onRefresh={this.props.refresh}/>
           {subjectForm}
         </div>
     );

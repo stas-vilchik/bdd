@@ -19,14 +19,17 @@ export default React.createClass({
     ).then((bblsResponse, subjectsResponse) => {
           let bbls = bblsResponse[0],
               subjects = subjectsResponse[0],
-              subjectsByBBL = _.groupBy(subjects, subject => subject.bbl);
-          bbls.push({});
+              subjectsWithExplicitBBL = subjects.map(subject => {
+                return _.extend(subject, { bbl: subject.bbl == null ? '' : subject.bbl });
+              }),
+              subjectsByBBL = _.groupBy(subjectsWithExplicitBBL, subject => subject.bbl);
+          bbls.push({ id: '' });
 
           let preparedBBLs = bbls.map(bbl => {
             return _.extend(bbl, { subjects: subjectsByBBL[bbl.id] || [] });
           });
 
-          this.setState({ list: preparedBBLs });
+          this.setState({ list: preparedBBLs, bbls: bbls });
         });
   },
 
@@ -39,7 +42,9 @@ export default React.createClass({
   },
 
   render() {
-    let bbls = this.state.list.map(bbl => <BBLItem key={bbl.id} bbl={bbl} refresh={this.requestData}/>);
+    let bbls = this.state.list.map(bbl => {
+      return <BBLItem key={bbl.id} bbl={bbl} bbls={this.state.bbls} refresh={this.requestData}/>
+    });
     return <div>{bbls}</div>;
   }
 });
