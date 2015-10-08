@@ -5,7 +5,7 @@ var errors = require('./exceptions');
 var Subject = require('./models/subject');
 var BBL = require('./models/bbl');
 
-function wrap(handler) {
+function wrap (handler) {
   return function (req, res) {
     try {
       var response = handler(req, res);
@@ -18,8 +18,10 @@ function wrap(handler) {
     catch (e) {
       if (e instanceof errors.NotFoundError) {
         res.status(404).end();
+      } else if (e instanceof errors.BadRequest) {
+        res.status(400).end();
       } else if (e instanceof errors.ConflictError) {
-        res.status(409).json({errors: e.errors});
+        res.status(409).json({ errors: e.errors });
       } else {
         res.status(500).end();
       }
@@ -28,60 +30,45 @@ function wrap(handler) {
 }
 
 
-function getSubjects() {
-  return storage.getSubjects();
+function getSubjects () {
+  return Subject.all();
 }
 
 
-function createSubject(req) {
-  var newSubject = new Subject(req.body);
-  if (!newSubject.isValid()) {
-    throw new errors.ConflictError(newSubject.validationFailures)
-  }
-
-  var subjects = storage.getSubjects();
-  var newSubjects = newSubject.saveTo(subjects);
-  storage.setSubjects(newSubjects);
-  return newSubject.attrs;
-}
-
-
-function changeSubject(req) {
-  var subject = storage.findSubject(req.params.id);
-  if (!subject) {
-    throw new errors.NotFoundError();
-  }
-
-  subject.setAttrs(req.body);
-  if (!subject.isValid()) {
-    throw new errors.ConflictError(subject.validationFailures)
-  }
-
-  var subjects = storage.getSubjects();
-  subjects = subject.saveTo(subjects);
-  storage.setSubjects(subjects);
+function createSubject (req) {
+  var subject = new Subject(req.body);
+  subject.save();
   return subject.attrs;
 }
 
 
-function deleteSubject(req) {
-  var subject = storage.findSubject(req.params.id);
+function changeSubject (req) {
+  var subject = Subject.find(req.params.id);
   if (!subject) {
     throw new errors.NotFoundError();
   }
-  var subjects = storage.getSubjects();
-  subjects = subject.removeFrom(subjects);
-  storage.setSubjects(subjects);
-  return null;
+  subject.setAttrs(req.body);
+  subject.save();
+  return subject.attrs;
 }
 
 
-function getBBls() {
+function deleteSubject (req) {
+  var subject = Subject.find(req.params.id);
+  if (!subject) {
+    throw new errors.NotFoundError();
+  }
+  subject.remove();
+  return subject.attrs;
+}
+
+
+function getBBls () {
   return storage.getBBLs();
 }
 
 
-function createBBL(req) {
+function createBBL (req) {
   var newBBL = new BBL(req.body);
   if (!newBBL.isValid()) {
     throw new errors.ConflictError(newBBL.validationFailures)
@@ -94,7 +81,7 @@ function createBBL(req) {
 }
 
 
-function changeBBL(req) {
+function changeBBL (req) {
   var bbl = storage.findBBL(req.params.id);
   if (!bbl) {
     throw new errors.NotFoundError();
@@ -112,7 +99,7 @@ function changeBBL(req) {
 }
 
 
-function deleteBBL(req) {
+function deleteBBL (req) {
   var bbl = storage.findBBL(req.params.id);
   if (!bbl) {
     throw new errors.NotFoundError();
