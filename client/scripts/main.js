@@ -1,5 +1,5 @@
 import React from 'react';
-import SubjectBox from './subject-box.js';
+import BBLList from './bbl-list.js';
 
 /*
  - SubjectBox
@@ -10,6 +10,6 @@ import SubjectBox from './subject-box.js';
  */
 
 React.render(
-  <SubjectBox url="/api/subjects"/>,
+  <BBLList/>,
   document.getElementById('content')
 );

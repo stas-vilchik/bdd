@@ -2,6 +2,8 @@ import React from 'react';
 import $ from 'jquery';
 import Marked from 'marked';
 
+const URL = '/api/subjects';
+
 export default React.createClass({
   handleSubmit: function (e) {
     e.preventDefault();
@@ -23,25 +25,25 @@ export default React.createClass({
   },
   handleSubjectCreate: function (subject) {
     $.ajax({
-      url: this.props.url,
+      url: URL,
       dataType: 'json',
       type: 'POST',
       data: JSON.stringify(subject),
       contentType: 'application/json',
       error: function (xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
+        console.error(URL, status, err.toString());
       }.bind(this)
     });
   },
   handleSubjectModify: function (subject) {
     $.ajax({
-      url: this.props.url + '/' + subject.id,
+      url: URL + '/' + subject.id,
       dataType: 'json',
       type: 'PUT',
       data: JSON.stringify(subject),
       contentType: 'application/json',
       error: function (xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
+        console.error(URL, status, err.toString());
       }.bind(this)
     });
   },
