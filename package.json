@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "prestart": "browserify client/scripts/main.js --debug -o client/scripts/build/main.bundle.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --recursive",
     "watch": "watchify client/scripts/main.js --verbose --debug -o client/scripts/build/main.bundle.js"
   },
   "repository": {
@@ -24,6 +24,7 @@
     "body-parser": "^1.14.1",
     "bootstrap": "3.3.5",
     "browserify": "11.2.0",
+    "chai": "^3.3.0",
     "express": "4.13.3",
     "mocha": "2.3.3",
     "node-persist": "0.0.6",
