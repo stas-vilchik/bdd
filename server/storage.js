@@ -1,4 +1,5 @@
 var persist = require('node-persist');
+var Subject = require('./models/subject');
 
 var isReady = false;
 
@@ -19,10 +20,22 @@ function getItem() {
   return persist.getItem.apply(persist, arguments);
 }
 
-module.exports.getSubjects = function () {
+function getSubjects () {
   return getItem('subjects') || [];
-};
+}
 
-module.exports.setSubjects = function (subjects) {
+function setSubjects (subjects) {
   return setItem('subjects', subjects);
-};
+}
+
+function findSubject (id) {
+  var subjects = getSubjects(),
+      subject = subjects.find(function (subject) {
+        return subject.id === id;
+      });
+  return subject ? new Subject(subject) : null;
+}
+
+module.exports.getSubjects = getSubjects;
+module.exports.setSubjects = setSubjects;
+module.exports.findSubject = findSubject;

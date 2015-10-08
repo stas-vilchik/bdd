@@ -16,6 +16,7 @@ app.get('/', function (req, res) {
 
 app.get('/api/subjects', api.getSubjects);
 app.post('/api/subjects', api.createSubject);
+app.put('/api/subjects/:id', api.changeSubject);
 
 var server = app.listen(3000, function () {
   var host = server.address().address;

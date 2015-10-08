@@ -23,15 +23,23 @@ Subject.prototype.isValid = function () {
 };
 
 Subject.prototype.setAttrs = function (newAttrs) {
+  var id = this.attrs.id;
   this.attrs = newAttrs;
+  this.attrs.id = id;
 };
 
 Subject.prototype.saveTo = function (collection) {
+  var newCollection = collection.slice(),
+      attrs = this.attrs;
   if (this.isNew()) {
     this.attrs.id = shortid.generate();
+    newCollection.push(attrs);
+  } else {
+    var index = collection.findIndex(function (subject) {
+      return subject.id === attrs.id;
+    });
+    newCollection.splice(index, 1, attrs);
   }
-  var newCollection = collection.slice();
-  newCollection.push(this.attrs);
   return newCollection;
 };
 
