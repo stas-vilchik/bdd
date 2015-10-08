@@ -2,6 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import SubjectList from './subject-list.js';
 import SubjectForm from './subject-form.js';
+import BblForm from './bbl-form.js';
 
 export default React.createClass({
   loadSubjectsFromServer: function () {
@@ -26,11 +27,12 @@ export default React.createClass({
   },
   render: function () {
     return (
-        <div className="subjectBox">
-          <h1>Subjects</h1>
-          <SubjectList data={this.state.data} url={this.props.url} onRefresh={this.loadSubjectsFromServer}/>
-          <SubjectForm url={this.props.url} onSubmit={this.loadSubjectsFromServer}/>
-        </div>
+      <div className="subjectBox">
+        <h1>Subjects</h1>
+        <SubjectList data={this.state.data} url={this.props.url} onRefresh={this.loadSubjectsFromServer}/>
+        <SubjectForm url={this.props.url} onSubmit={this.loadSubjectsFromServer}/>
+        <BblForm url='api/bbls' onSubmit={this.loadSubjectsFromServer}/>
+      </div>
     );
   }
 });
