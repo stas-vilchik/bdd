@@ -1,5 +1,6 @@
 var persist = require('node-persist');
 var Subject = require('./models/subject');
+var BBL = require('./models/bbl');
 
 var isReady = false;
 
@@ -40,8 +41,32 @@ function clearSubjects() {
   setSubjects([]);
 }
 
+function getBBLs() {
+  return getItem('bbls') || [];
+}
+
+function setBBLs(bbls) {
+  return setItem('bbls', bbls);
+}
+
+function findBBL(id) {
+  var bbls = getBBLs(),
+      bbl = bbls.find(function (bbl) {
+        return bbl.id === id;
+      });
+  return bbl ? new BBL(bbl) : null;
+}
+
+function clearBBLs() {
+  setBBLs([]);
+}
+
 module.exports.init = makeReady;
 module.exports.getSubjects = getSubjects;
 module.exports.setSubjects = setSubjects;
 module.exports.findSubject = findSubject;
 module.exports.clearSubjects = clearSubjects;
+module.exports.getBBLs = getBBLs;
+module.exports.setBBLs = setBBLs;
+module.exports.findBBL = findBBL;
+module.exports.clearBBLs = clearBBLs;
