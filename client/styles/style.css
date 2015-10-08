@@ -1,0 +1,16 @@
+body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.jumbotron {
+    text-align: center;
+}
+
+.bbl {
+
+}
+
+.bbl + .bbl {
+    margin-top: 60px;
+}

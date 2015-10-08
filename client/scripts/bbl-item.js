@@ -7,7 +7,7 @@ export default React.createClass({
     let label = this.props.bbl.date || 'Not Planned';
     let subjectForm = this.props.bbl.id ? null : <SubjectForm onSubmit={this.props.refresh}/>;
     return (
-        <div>
+        <div className="bbl">
           <h2>{label}</h2>
           <SubjectList data={this.props.bbl.subjects} onRefresh={this.props.refresh}/>
           {subjectForm}

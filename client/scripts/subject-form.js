@@ -14,9 +14,9 @@ export default React.createClass({
       return;
     }
     if (this.props.subject) {
-      this.handleSubjectModify({id: this.props.subject.id, author: author, description: description, title: title});
+      this.handleSubjectModify({ id: this.props.subject.id, author: author, description: description, title: title });
     } else {
-      this.handleSubjectCreate({author: author, description: description, title: title});
+      this.handleSubjectCreate({ author: author, description: description, title: title });
     }
     this.props.onSubmit();
     React.findDOMNode(this.refs.author).value = '';
@@ -52,12 +52,22 @@ export default React.createClass({
     var title = this.props.subject ? this.props.subject.title : null;
     var description = this.props.subject ? this.props.subject.description : null;
     return (
-        <form className="subjectForm" onSubmit={this.handleSubmit}>
-          <input type="text" placeholder="Your name" ref="author" defaultValue={author}/>
-          <input type="text" placeholder="Title" ref="title" defaultValue={title}/>
-          <input type="text" placeholder="Describe the topic you want to present" ref="description"
-                 defaultValue={description}/>
-          <input type="submit" value="Post"/>
+        <form onSubmit={this.handleSubmit}>
+          <div className="form-group">
+            <label for="form-author">Your Name</label>
+            <input className="form-control" id="form-author" type="text" ref="author" defaultValue={author}/>
+          </div>
+          <div className="form-group">
+            <label for="form-title">Title</label>
+            <input className="form-control" id="form-title" type="text" ref="title" defaultValue={title}/>
+          </div>
+          <div className="form-group">
+            <label for="form-description">Description</label>
+            <textarea className="form-control" id="form-description" type="text"
+                      placeholder="Describe the topic you want to present" ref="description"
+                      defaultValue={description}/>
+          </div>
+          <input className="btn btn-primary" type="submit" value="Post"/>
         </form>
     );
   }

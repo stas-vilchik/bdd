@@ -1,15 +1,7 @@
 import React from 'react';
-import BBLList from './bbl-list.js';
-
-/*
- - SubjectBox
- - SubjectList
- - Subject
- - SubjectForm
-
- */
+import Page from './page.js';
 
 React.render(
-  <BBLList/>,
+  <Page/>,
   document.getElementById('content')
 );

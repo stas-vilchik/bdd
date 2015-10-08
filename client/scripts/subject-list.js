@@ -11,7 +11,7 @@ export default React.createClass({
       );
     }.bind(this));
     return (
-        <div className="subjectList">
+        <div className="list-group">
           {subjectNodes}
         </div>
     );
