@@ -19,5 +19,10 @@ function getItem() {
   return persist.getItem.apply(persist, arguments);
 }
 
-module.exports.setItem = setItem;
-module.exports.getItem = getItem;
+module.exports.getSubjects = function () {
+  return getItem('subjects') || [];
+};
+
+module.exports.setSubjects = function (subjects) {
+  return setItem('subjects', subjects);
+};
