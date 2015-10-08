@@ -43,4 +43,14 @@ Subject.prototype.saveTo = function (collection) {
   return newCollection;
 };
 
+Subject.prototype.removeFrom = function (collection) {
+  var newCollection = collection.slice(),
+      attrs = this.attrs,
+      index = collection.findIndex(function (subject) {
+        return subject.id === attrs.id;
+      });
+  newCollection.splice(index, 1);
+  return newCollection;
+};
+
 module.exports = Subject;

@@ -37,3 +37,15 @@ module.exports.changeSubject = function (req, res) {
     res.status(404).end();
   }
 };
+
+module.exports.deleteSubject = function (req, res) {
+  var subject = storage.findSubject(req.params.id);
+  if (subject) {
+    var subjects = storage.getSubjects();
+    subjects = subject.removeFrom(subjects);
+    storage.setSubjects(subjects);
+    res.status(204).end();
+  } else {
+    res.status(404).end();
+  }
+};
