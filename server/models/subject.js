@@ -7,7 +7,7 @@ function Subject(attrs) {
 }
 
 Subject.prototype.isNew = function () {
-  return this.attrs.id !== null;
+  return this.attrs.id == null;
 };
 
 Subject.prototype.isValid = function () {
