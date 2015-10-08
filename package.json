@@ -21,14 +21,19 @@
   "homepage": "https://github.com/stas-vilchik/bdd#readme",
   "dependencies": {
     "babelify": "6.3.0",
+    "body-parser": "^1.14.1",
     "bootstrap": "3.3.5",
     "browserify": "11.2.0",
     "express": "4.13.3",
     "mocha": "2.3.3",
+    "node-persist": "0.0.6",
     "react": "0.13.3",
+    "shortid": "^2.2.2",
     "watchify": "^3.4.0"
   },
   "browserify": {
-    "transform": ["babelify"]
+    "transform": [
+      "babelify"
+    ]
   }
 }
