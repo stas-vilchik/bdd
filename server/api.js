@@ -15,7 +15,7 @@ module.exports.createSubject = function (req, res) {
   if (newSubject.isValid()) {
     var newSubjects = newSubject.saveTo(subjects);
     storage.setItem('subjects', newSubjects);
-    res.status(204).json(newSubject.attrs);
+    res.status(200).json(newSubject.attrs);
   } else {
     res.status(409).json({ errors: newSubject.validationFailures });
   }
