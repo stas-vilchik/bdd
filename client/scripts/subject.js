@@ -56,7 +56,7 @@ export default React.createClass({
             <h4 className="list-group-item-heading">
               {this.props.subject.title} - {this.props.subject.author}
             </h4>
-            <p class="list-group-item-text" dangerouslySetInnerHTML={this.rawMarkup()}/>
+            <p className="list-group-item-text" dangerouslySetInnerHTML={this.rawMarkup()}/>
             <input className="btn btn-default" type="submit" value="Modify" onClick={this.modify}/>
             &nbsp;
             <input className="btn btn-danger" type="submit" value="Delete" onClick={this.delete}/>

@@ -54,15 +54,15 @@ export default React.createClass({
     return (
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
-            <label for="form-author">Your Name</label>
+            <label htmlFor="form-author">Your Name</label>
             <input className="form-control" id="form-author" type="text" ref="author" defaultValue={author}/>
           </div>
           <div className="form-group">
-            <label for="form-title">Title</label>
+            <label htmlFor="form-title">Title</label>
             <input className="form-control" id="form-title" type="text" ref="title" defaultValue={title}/>
           </div>
           <div className="form-group">
-            <label for="form-description">Description</label>
+            <label htmlFor="form-description">Description</label>
             <textarea className="form-control" id="form-description" type="text"
                       placeholder="Describe the topic you want to present" ref="description"
                       defaultValue={description}/>

@@ -23,7 +23,7 @@ export default React.createClass({
           bbls.push({});
 
           let preparedBBLs = bbls.map(bbl => {
-            return _.extend(bbl, { subjects: subjectsByBBL[bbl.id] });
+            return _.extend(bbl, { subjects: subjectsByBBL[bbl.id] || [] });
           });
 
           this.setState({ list: preparedBBLs });
