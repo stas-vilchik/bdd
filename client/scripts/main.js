@@ -28,20 +28,6 @@ var SubjectBox = React.createClass({
       }.bind(this)
     });
   },
-  handleSubjectSubmit: function (subject) {
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      type: 'POST',
-      data: JSON.stringify(subject),
-      success: function (data) {
-        this.setState({data: data});
-      }.bind(this),
-      error: function (xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
   getInitialState: function () {
     return {data: []};
   },
@@ -52,8 +38,8 @@ var SubjectBox = React.createClass({
     return (
       <div className="subjectBox">
         <h1>Subjects</h1>
-        <SubjectList data={this.state.data}/>
-        <SubjectForm onSubjectSubmit={this.handleSubjectSubmit}/>
+        <SubjectList data={this.state.data} url={this.props.url} onRefresh={this.loadSubjectsFromServer}/>
+        <SubjectForm url={this.props.url} onSubmit={this.loadSubjectsFromServer}/>
       </div>
     );
   }
@@ -63,11 +49,11 @@ var SubjectList = React.createClass({
   render: function () {
     var subjectNodes = this.props.data.map(function (subject) {
       return (
-        <Subject author={subject.author} title={subject.title}>
-          {subject.text}
+        <Subject key={subject.id} subject={subject} url={this.props.url} onRefresh={this.props.onRefresh}>
+          {subject.description}
         </Subject>
       );
-    });
+    }.bind(this));
     return (
       <div className="subjectList">
         {subjectNodes}
@@ -85,18 +71,51 @@ var SubjectForm = React.createClass({
     if (!description || !author || !title) {
       return;
     }
-    this.props.onSubjectSubmit({author: author, description: description, title: title});
+    if (this.props.subject) {
+      this.handleSubjectModify({id: this.props.subject.id, author: author, description: description, title: title});
+    } else {
+      this.handleSubjectCreate({author: author, description: description, title: title});
+    }
+    this.props.onSubmit();
     React.findDOMNode(this.refs.author).value = '';
     React.findDOMNode(this.refs.title).value = '';
     React.findDOMNode(this.refs.description).value = '';
     return;
   },
+  handleSubjectCreate: function (subject) {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      type: 'POST',
+      data: JSON.stringify(subject),
+      contentType: 'application/json',
+      error: function (xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  handleSubjectModify: function (subject) {
+    $.ajax({
+      url: this.props.url + '/' + subject.id,
+      dataType: 'json',
+      type: 'PUT',
+      data: JSON.stringify(subject),
+      contentType: 'application/json',
+      error: function (xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   render: function () {
+    var author = this.props.subject ? this.props.subject.author : null;
+    var title = this.props.subject ? this.props.subject.title : null;
+    var description = this.props.subject ? this.props.subject.description : null;
     return (
       <form className="subjectForm" onSubmit={this.handleSubmit}>
-        <input type="text" placeholder="Your name" ref="author"/>
-        <input type="text" placeholder="Title" ref="title"/>
-        <input type="text" placeholder="Describe the topic you want to present" ref="description"/>
+        <input type="text" placeholder="Your name" ref="author" defaultValue={author}/>
+        <input type="text" placeholder="Title" ref="title" defaultValue={title}/>
+        <input type="text" placeholder="Describe the topic you want to present" ref="description"
+               defaultValue={description}/>
         <input type="submit" value="Post"/>
       </form>
     );
@@ -104,20 +123,62 @@ var SubjectForm = React.createClass({
 });
 
 var Subject = React.createClass({
+  getInitialState: function () {
+    return {isModifying: false};
+  },
+
+  endModify: function() {
+    this.props.onRefresh();
+    this.setState({isModifying: false});
+  },
+
+  cancelModify: function () {
+    this.setState({isModifying: false});
+  },
+
   rawMarkup: function () {
     var rawMarkup = Marked(this.props.children.toString(), {sanitize: true});
     return {__html: rawMarkup};
   },
 
+  modify: function () {
+    this.setState({isModifying: true});
+  },
+
+  delete: function () {
+    $.ajax({
+      url: this.props.url + '/' + this.props.subject.id,
+      dataType: 'json',
+      type: 'DELETE',
+      success: function () {
+        this.props.onRefresh();
+      }.bind(this),
+      error: function (xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+
   render: function () {
-    return (
-      <div className="subject">
-        <h2 className="subjectAuthor">
-          {this.props.title} - {this.props.author}
-        </h2>
-        <span dangerouslySetInnerHTML={this.rawMarkup()}/>
-      </div>
-    );
+    if (this.state.isModifying) {
+      return (
+        <div>
+          <SubjectForm onSubmit={this.endModify} subject={this.props.subject} url={this.props.url}/>
+          <input type="submit" value="Cancel" onClick={this.cancelModify}/>
+        </div>
+      )
+    } else {
+      return (
+        <div key={this.props.subject.id} className="subject">
+          <h2 className="subjectAuthor">
+            {this.props.subject.title} - {this.props.subject.author} -
+            <input type="submit" value="Modify" onClick={this.modify}/> -
+            <input type="submit" value="Delete" onClick={this.delete}/>
+          </h2>
+          <span dangerouslySetInnerHTML={this.rawMarkup()}/>
+        </div>
+      );
+    }
   }
 });
 
