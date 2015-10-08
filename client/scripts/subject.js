@@ -46,8 +46,8 @@ export default React.createClass({
     if (this.state.isModifying) {
       return (
           <div className="list-group-item">
-            <SubjectForm onSubmit={this.endModify} subject={this.props.subject} url={URL}/>
-            <input type="submit" value="Cancel" onClick={this.cancelModify}/>
+            <SubjectForm onSubmit={this.endModify} onCancel={this.cancelModify}
+                         subject={this.props.subject} url={URL}/>
           </div>
       )
     } else {

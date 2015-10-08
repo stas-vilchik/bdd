@@ -47,10 +47,18 @@ export default React.createClass({
       }.bind(this)
     });
   },
+
+  cancel(e) {
+    e.preventDefault();
+    this.props.onCancel();
+  },
+
   render: function () {
     var author = this.props.subject ? this.props.subject.author : null;
     var title = this.props.subject ? this.props.subject.title : null;
     var description = this.props.subject ? this.props.subject.description : null;
+    var cancelButton = this.props.subject ?
+        <input onClick={this.cancel} className="btn btn-default" type="submit" value="Cancel"/> : null;
     return (
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
@@ -68,6 +76,8 @@ export default React.createClass({
                       defaultValue={description}/>
           </div>
           <input className="btn btn-primary" type="submit" value="Post"/>
+          &nbsp;
+          {cancelButton}
         </form>
     );
   }
