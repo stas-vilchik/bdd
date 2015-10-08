@@ -1,7 +1,9 @@
-var shortid = require('shortid');
+var shortid = require('shortid'),
+    validate = require('../validators');
 
 function Subject(attrs) {
   this.attrs = attrs;
+  this.validationFailures = [];
 }
 
 Subject.prototype.isNew = function () {
@@ -9,7 +11,15 @@ Subject.prototype.isNew = function () {
 };
 
 Subject.prototype.isValid = function () {
-  return true;
+  this.validationFailures = validate(this.attrs)
+      .checkExist('title')
+      .checkType('title', 'string')
+      .checkExist('description')
+      .checkType('description', 'string')
+      .checkExist('author')
+      .checkType('author', 'string')
+      .getFailedChecks();
+  return this.validationFailures.length === 0;
 };
 
 Subject.prototype.setAttrs = function (newAttrs) {
